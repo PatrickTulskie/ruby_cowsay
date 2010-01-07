@@ -18,9 +18,10 @@ class Cow
   # ====================
   
   def initialize(options={})
-    cow_template = options[:cow] || 'default'
+    cow_template = Cow.cows.include?(options[:cow]) ? options[:cow] : 'default'
     require "#{File.expand_path(File.dirname(__FILE__))}/cows/#{cow_template}"
     Cow.class_eval 'include CowTemplate'
+    face_type = Cow.faces.include?(options[:face_type]) ? options[:face_type] : 'default'
     @eyes, @tongue = construct_face(options[:face_type])
   end
   
@@ -31,11 +32,11 @@ class Cow
   # =================
   # = Class Methods =
   # =================
-  def self.available_faces
-    FACE_TYPES.keys
+  def self.faces
+    FACE_TYPES.keys.sort
   end
   
-  def self.available_cows
+  def self.cows
     Dir.new("#{File.expand_path(File.dirname(__FILE__))}/cows/").entries.inject([]) { |files, cow_file| files << cow_file.gsub('.rb', '') if cow_file =~ /\.rb/; files }
   end
   
