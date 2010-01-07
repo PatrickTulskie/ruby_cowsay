@@ -1,16 +1,42 @@
 class Cow
   
+  FACE_TYPES = {
+    'default' => ["oo", "  "],
+    'borg' => ["==", "  "],
+    'dead' => ["==", "U "],
+    'greedy' => ["$$", "  "],
+    'paranoid' => ["@@", "  "],
+    'stoned' => ["**", "U "],
+    'tired' => ["--", "  "],
+    'wired' => ["OO", "  "],
+    'young' => ["..", "  "]
+  }
+  MAX_LINE_LENGTH = 36
+  
+  # ====================
+  # = Instance Methods =
+  # ====================
+  
   def initialize(options={})
-    # Load the cow into our current class
     cow_template = options[:cow] || 'default'
     require "#{File.expand_path(File.dirname(__FILE__))}/cows/#{cow_template}"
     Cow.class_eval 'include CowTemplate'
-    @max_line_length = 36
     @eyes, @tongue = construct_face(options[:face_type])
   end
   
   def say(message, balloon_type = 'say')
     construct_balloon(message, balloon_type) + "\n" + render_cow
+  end
+  
+  # =================
+  # = Class Methods =
+  # =================
+  def self.available_faces
+    FACE_TYPES.keys
+  end
+  
+  def self.available_cows
+    Dir.new("#{File.expand_path(File.dirname(__FILE__))}/cows/").entries.inject([]) { |files, cow_file| files << cow_file.gsub('.rb', '') if cow_file =~ /\.rb/; files }
   end
   
   private
@@ -53,29 +79,19 @@ class Cow
   end
   
   def construct_face(type = 'default')
-    { 'default' => ["oo", "  "],
-      'borg' => ["==", "  "],
-      'dead' => ["==", "U "],
-      'greedy' => ["$$", "  "],
-      'paranoid' => ["@@", "  "],
-      'stoned' => ["**", "U "],
-      'tired' => ["--", "  "],
-      'wired' => ["OO", "  "],
-      'young' => ["..", "  "]
-    }[type || 'default']
+    FACE_TYPES[type || 'default']
   end
-  
   
   def format_message(message)
     message_lines = []
-    if message.length > @max_line_length
+    if message.length > MAX_LINE_LENGTH
       words, line = message.split, ""
       for word in words
-        if line.length > 0 && (line.length + word.length) > @max_line_length
+        if line.length > 0 && (line.length + word.length) > MAX_LINE_LENGTH
           message_lines << line
           line = ""
         end
-        if word.length > @max_line_length
+        if word.length > MAX_LINE_LENGTH
           broken_word = split_word(word)
           line = broken_word.pop
           message_lines = message_lines.concat(broken_word)
@@ -94,10 +110,10 @@ class Cow
   end
   
   def split_word(word)
-    return [word] unless word.length > @max_line_length
+    return [word] unless word.length > MAX_LINE_LENGTH
     lines = []
     while word.length > 0 do
-      lines << word.slice!(0..(@max_line_length - 1))
+      lines << word.slice!(0..(MAX_LINE_LENGTH - 1))
     end
     return lines.compact
   end
