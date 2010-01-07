@@ -29,6 +29,10 @@ class Cow
     construct_balloon(message, balloon_type) + "\n" + render_cow
   end
   
+  def think(message)
+    construct_balloon(message, 'think') + "\n" + render_cow
+  end
+  
   # =================
   # = Class Methods =
   # =================
