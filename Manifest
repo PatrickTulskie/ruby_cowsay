@@ -1,5 +1,5 @@
 Manifest
-README.mkdown
+README.mdown
 Rakefile
 lib/ruby_cowsay.rb
 lib/ruby_cowsay/cow.rb
