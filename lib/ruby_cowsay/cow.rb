@@ -24,7 +24,7 @@ class Cow
     require "#{File.expand_path(File.dirname(__FILE__))}/cows/#{@cow_type}"
     Cow.class_eval 'include CowTemplate'
     @face_type = Cow.faces.include?(options[:face_type]) ? options[:face_type] : 'default'
-    @eyes, @tongue = construct_face(options[:face_type])
+    set_eyes_and_tongue!
   end
   
   def say(message, balloon_type = 'say')
@@ -33,6 +33,16 @@ class Cow
   
   def think(message)
     construct_balloon(message, 'think') + "\n" + render_cow
+  end
+  
+  def set_eyes_and_tongue!
+    @eyes, @tongue = construct_face(@face_type)
+  end
+  
+  alias_method :set_face, :face_type=
+  def face_type=(face)
+    set_face face
+    set_eyes_and_tongue!
   end
   
   # =================
