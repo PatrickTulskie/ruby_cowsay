@@ -1,6 +1,6 @@
 class Cow
   
-  attr_accessor :cow_type, :eyes, :tongue
+  attr_accessor :cow_type, :eyes, :tongue, :face_type
   
   FACE_TYPES = {
     'default' => ["oo", "  "],
@@ -23,7 +23,7 @@ class Cow
     @cow_type = Cow.cows.include?(options[:cow]) ? options[:cow] : 'default'
     require "#{File.expand_path(File.dirname(__FILE__))}/cows/#{@cow_type}"
     Cow.class_eval 'include CowTemplate'
-    face_type = Cow.faces.include?(options[:face_type]) ? options[:face_type] : 'default'
+    @face_type = Cow.faces.include?(options[:face_type]) ? options[:face_type] : 'default'
     @eyes, @tongue = construct_face(options[:face_type])
   end
   
