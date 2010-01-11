@@ -120,10 +120,8 @@ class Cow
           broken_word = split_word(word)
           line = broken_word.pop
           message_lines = message_lines.concat(broken_word)
-        elsif line.length == 0
-          line = word
         else
-          line = "#{line} #{word}"
+          line = (line.length == 0) ? word : "#{line} #{word}"
         end
       end
       message_lines << line
