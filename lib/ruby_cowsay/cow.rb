@@ -1,5 +1,7 @@
 class Cow
   
+  attr_accessor :cow_type, :eyes, :tongue
+  
   FACE_TYPES = {
     'default' => ["oo", "  "],
     'borg' => ["==", "  "],
@@ -18,8 +20,8 @@ class Cow
   # ====================
   
   def initialize(options={})
-    cow_template = Cow.cows.include?(options[:cow]) ? options[:cow] : 'default'
-    require "#{File.expand_path(File.dirname(__FILE__))}/cows/#{cow_template}"
+    @cow_type = Cow.cows.include?(options[:cow]) ? options[:cow] : 'default'
+    require "#{File.expand_path(File.dirname(__FILE__))}/cows/#{@cow_type}"
     Cow.class_eval 'include CowTemplate'
     face_type = Cow.faces.include?(options[:face_type]) ? options[:face_type] : 'default'
     @eyes, @tongue = construct_face(options[:face_type])
@@ -42,6 +44,14 @@ class Cow
   
   def self.cows
     Dir.new("#{File.expand_path(File.dirname(__FILE__))}/cows/").entries.inject([]) { |files, cow_file| files << cow_file.gsub('.rb', '') if cow_file =~ /\.rb/; files }
+  end
+  
+  def self.say(message, type = 'default', face = 'default')
+    Cow.new({ :cow => type, :face_type => face }).say(message)
+  end
+  
+  def self.think(message, type = 'default', face = 'default')
+    Cow.new({ :cow => type, :face_type => face }).think(message)
   end
   
   private
