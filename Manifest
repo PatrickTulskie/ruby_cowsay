@@ -51,3 +51,4 @@ lib/ruby_cowsay/cows/vader-koala.rb
 lib/ruby_cowsay/cows/vader.rb
 lib/ruby_cowsay/cows/www.rb
 ruby_cowsay.gemspec
+tests/test_helper.rb
