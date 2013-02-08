@@ -7,7 +7,7 @@ module CowTemplate
     #{@thoughts}    .; .  : .' :  :  : . 
      #{@thoughts}   i..`: i` i.i.,i  i . 
       #{@thoughts}   `,--.|i |i|ii|ii|i: 
-           U${eyes}U\\.'\@\@\@\@\@\@`.||' 
+           U#{@eyes}U\\.'\@\@\@\@\@\@`.||' 
            \\__/(\@\@\@\@\@\@\@\@\@\@)'  
                 (\@\@\@\@\@\@\@\@)    
                 `YY~~~~YY'    
