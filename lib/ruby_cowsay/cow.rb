@@ -72,7 +72,7 @@ class Cow
     if balloon_type == 'think'
       @thoughts = 'o'
       @border = %w{ ( ) ( ) ( ) }
-    elsif message.length < 36
+    elsif message.length < MAX_LINE_LENGTH
       @thoughts = '\\'
       @border = %w{ < > }
     else
